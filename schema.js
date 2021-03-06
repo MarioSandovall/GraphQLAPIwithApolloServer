@@ -18,6 +18,14 @@ type Query {
     speakers:[Speaker]
     speakerById(id:ID): Speaker
 }
+
+union SessionOrError = Session | Error
+
+type Error {
+  code: String,
+  message: String,
+  token: String
+}
 enum Room {
     EUROPA,
     SOL,

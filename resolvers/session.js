@@ -1,10 +1,19 @@
+const { ApolloError } = require('apollo-server-errors');
 const _ = require('lodash');
 
 module.exports = {
     async speakers(session, args, { dataSources }) {
-        const speakers = await dataSources.speakerAPI.getSpeakers();
-        return speakers.filter((speaker) => {
-            return _.filter(session.speakers, { id: speaker.id }).length > 0;
-        });
+        try{
+            const speakers = await dataSources.speakerAPI.getSpeakers();
+            return speakers.filter((speaker) => {
+                return _.filter(session.speakers, { id: speaker.id }).length > 0;
+            });
+        }catch(error){
+            return new ApolloError('Unable to get speakers', 'SPEAKERAPIERROR', 
+            {
+                token: 'UniqueToke'
+            });
+        }
+       
     }
 }
